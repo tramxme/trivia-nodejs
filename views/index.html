@@ -1,0 +1,128 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="../public/javascripts/index.js"></script>
+  <title><%= title %></title>
+</head>
+<body>
+  <h2 id='greeting'></h2>
+  <h3>Current players:</h3>
+  <ul id="users"></ul>
+  <div id="questions">
+    <h3>Questions: </h3>
+      <ol>
+        <li>
+            How many numbers between 1 and 100 can be written
+            using only the digits {1,2,3,4, and 5}? repeating digits o.k.
+            <input id='answer_1'>
+        </li>
+
+        <li>
+            A high school senior said she knows all the seniors,
+            half the juniors, 1/3 of the sophomores,
+            and 1/4 of the freshmen.
+            If each class has the same numbers of students,
+            then she knows what fraction of the school?
+            <input id='answer_2'>
+        </li>
+
+        <li>
+            How many sides does a nonagon have?
+            <input id='answer_3'>
+        </li>
+
+        <li>
+           5 to the power of 0 equals what?
+           <input id='answer_4'>
+        </li>
+
+        <li>
+            What is the bigger number, a googol or a billion?
+            <input id='answer_5'>
+        </li>
+
+     </ol>
+  </div>
+
+  <script type="text/javascript" charset="utf-8">
+  var socket = io.connect('http://localhost');
+
+    //Get user's name
+    socket.emit('set_user_name', prompt("Pick a name", "YOLOSWAG"));
+
+    //Ask user to pick a different name if one was already taken
+    socket.on('choose_diff_name',function(){
+        socket.emit('set_user_name',prompt("Please pick a different name", "YOLOSWAG"));
+        });
+
+    socket.on('ready',function(name, users){
+        $('#greeting').append('Hello ' + name + "!!!!");
+        Object.keys(users).forEach(function(key){
+          $('#users').append("<li>" + key + " : " + "<b id=" + key + ">" + users[key] + "</b>" +"</li>");
+          });
+    });
+
+    //Add new player
+    socket.on('add', function(data){
+        $('#users').append("<li>" + data.name + ' : ' + "<b id=" + data.name + ">" + data.score + "</b>" + "</li>");
+        });
+
+    function check_answer(input_box,question){
+      $('#' + input_box).keypress(function(e){
+        if(e.which == 13){
+          socket.emit(question, {attempt: $('#' + input_box).val()});
+          socket.on('wrong', function(){
+            $('#' + input_box).val('');
+            alert('Try again!!!');
+            });
+        }
+      });
+    };
+
+    //Question 1:
+    check_answer('answer_1', 'question_1');
+    socket.on('correct_1',function(answer, name, score){
+       $('input#answer_1').replaceWith('</br> <span> The answer is: ' + '<b> ' + answer + '</b>. ' +  "<i> " + name + ' was correct!!! </i> </span>');
+       $('#' + name).replaceWith('<b id=' + name + '>' + score + '</b>');
+    });
+
+    //Question 2
+     check_answer('answer_2', 'question_2');
+     socket.on('correct_2',function(answer, name, score){
+         $('input#answer_2').replaceWith('</br> <span> The answer is: ' + '<b> ' + answer + '</b>. ' +  "<i> " + name + ' was correct!!! </i> </span>');
+         $('#' + name).replaceWith('<b id=' + name + '>' + score + '</b>');
+        });
+
+      //Question 3
+      check_answer('answer_3', 'question_3');
+     socket.on('correct_3',function(answer, name, score){
+         $('input#answer_3').replaceWith('</br> <span> The answer is: ' + '<b> ' + answer + '</b>. ' +  "<i> " + name + ' was correct!!! </i> </span>');
+         $('#' + name).replaceWith('<b id=' + name + '>' + score + '</b>');
+        });
+
+     //Question 4
+     check_answer('answer_4', 'question_4');
+     socket.on('correct_4',function(answer, name, score){
+         $('input#answer_4').replaceWith('</br> <span> The answer is: ' + '<b> ' + answer + '</b>. ' +  "<i> " + name + ' was correct!!! </i> </span>');
+         $('#' + name).replaceWith('<b id=' + name + '>' + score + '</b>');
+        });
+
+    //Question 5
+     check_answer('answer_5', 'question_5');
+     socket.on('correct_5',function(answer, name, score){
+         $('input#answer_5').replaceWith('</br> <span> The answer is: ' + '<b> ' + answer + '</b>. ' +  "<i> " + name + ' was correct!!! </i> </span>');
+         $('#' + name).replaceWith('<b id=' + name + '>' + score + '</b>');
+        });
+
+     //on disconnect
+     socket.on('user_disconnect',function(name, users){
+        $('#' + name).append('<i> - is disconnected </i>');
+     });
+
+  </script>
+</body>
+</html>

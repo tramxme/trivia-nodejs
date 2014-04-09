@@ -1,0 +1,17 @@
+{
+  "name": "application-name",
+  "version": "0.0.1",
+  "private": true,
+  "socket.io": "0.9.13",
+  "scripts": {
+    "start": "node app.js",
+    "test": "mocha"
+  },
+  "dependencies": {
+    "express": "3.5.1",
+    "jade": "*"
+  },
+  "devDependencies": {
+    "mocha": "~1.17.0"
+  }
+}
