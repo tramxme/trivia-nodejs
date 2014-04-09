@@ -5,7 +5,6 @@
 
 var express = require('express');
 var http = require('http');
-var index = require('./routes/index.js');
 var app = express();
 var server = http.createServer(app);
 var path = require('path');
