@@ -9,6 +9,7 @@ var app = express();
 var server = http.createServer(app);
 var path = require('path');
 var fs = require('fs');
+var io = require('socket.io').listen(server);
 // all environments
 app.set('port', process.env.PORT || 5000);
 app.set('views', path.join(__dirname, 'views'));
@@ -29,8 +30,6 @@ io.configure(function () {
   io.set("transports", ["xhr-polling"]);
   io.set("polling duration", 10);
 });
-
-var io = require('socket.io').listen(server);
 
 var users = {};
 
