@@ -49,7 +49,7 @@
   </div>
 
   <script type="text/javascript" charset="utf-8">
-  var socket = io.connect('http://localhost');
+  var socket = io.connect(window.location.hostname);
 
     //Get user's name
     socket.emit('set_user_name', prompt("Pick a name", "YOLOSWAG"));
