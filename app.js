@@ -1,27 +1,16 @@
-
-/**
- * Module dependencies.
- */
-
 var express = require('express');
 var http = require('http');
+var port = process.env.PORT || 3000
 var app = express();
 var server = http.createServer(app);
-var path = require('path');
-var fs = require('fs');
 var io = require('socket.io').listen(server);
 // all environments
-app.set('port', process.env.PORT || 5000);
-app.set('views', path.join(__dirname, 'views'));
-app.engine('html', require('ejs').renderFile);
-app.use(express.logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded());
-app.use(express.methodOverride());
-app.use(express.cookieParser('your secret here'));
-app.use(express.session());
-app.use(app.router);
-app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(express.static(__dirname + '/views'));
+
+server.listen(port, function(){
+  console.log('Starting server');
+});
 
 // Heroku won't actually allow WebSockets
 // have to setup polling instead.
