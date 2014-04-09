@@ -5,3 +5,6 @@ Need to work on:
 [ ] Write automated tests for the UI
 
 [ ] Style the UI
+
+-------
+Test it out here: http://math-trivia.herokuapp.com/
