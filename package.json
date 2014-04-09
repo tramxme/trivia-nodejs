@@ -1,9 +1,8 @@
 {
-  "name": "math trivia",
+  "name": "math_trivia",
   "author": "Tram Lai",
   "version": "0.0.1",
   "private": true,
-
   "socket.io": "0.9.13",
   "scripts": {
     "start": "node app.js",
